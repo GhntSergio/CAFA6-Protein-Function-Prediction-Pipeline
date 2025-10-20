@@ -1,0 +1,70 @@
+Dataset Description
+Background
+The Gene Ontology (GO) is a concept hierarchy that describes the biological function of genes and gene products at different levels of abstraction (Ashburner et al., 2000). It is a good model to describe the multi-faceted nature of protein function.
+
+GO is a directed acyclic graph. The nodes in this graph are functional descriptors (terms or classes) connected by relational ties between them (is_a, part_of, etc.). For example, terms “protein binding activity” and “binding activity” are related by an is_a relationship; however, the edge in the graph is often reversed to point from binding towards protein binding.
+
+This graph contains three subgraphs (subontologies): Molecular Function (MF), Biological Process (BP), and Cellular Component (CC), defined by their root nodes. Biologically, each subgraph represents a different aspect of the protein's function: what it does on a molecular level (MF), which biological processes it participates in (BP), and where in the cell it is located (CC). See the Gene Ontology Overview for more details.
+
+The protein's function is therefore represented by a subset of one or more of the subontologies.
+
+These annotations are supported by evidence codes, which can be broadly divided into experimental (e.g., as documented in a paper published by a research team of biologists) and non-experimental. Non-experimental terms are usually inferred by computational means. We recommend you read more about the different types of GO evidence codes.
+
+We will use experimentally determined term–protein assignments as class labels for each protein. That is, if a protein is labeled with a term, it means that this protein has this function validated by experimental evidence. By processing these annotated terms, we can generate a dataset of proteins and their ground truth labels for each term. The absence of a term annotation does not necessarily mean a protein does not have this function, only that this annotation does not exist (yet) in the GO annotation database. A protein may be annotated by one or more terms from the same subontology, and by terms from more than one subontology.
+
+Ashburner M, et al. Gene ontology: tool for the unification of biology. The Gene Ontology Consortium. Nat Genet (2000) 25(1):25–29.
+
+Training Set
+For the training set, we include all proteins with annotated terms that have been validated by experimental or high-throughput evidence, traceable author statement (evidence code TAS), or inferred by curator (IC). More information about evidence codes can be found here.
+
+We use annotations from the UniProtKB release of 18 June 2025. The training set contains proteins from eukaryotes and 17 bacteria-of-interest. The list of selected species is provided below.
+
+The participants are not required to use these data and are also welcome to use any other data available to them.
+
+Test Superset
+The test superset is a set of protein sequences on which the participants are asked to predict GO terms and optionally a free-text paragraph describing the protein’s functions.
+
+Test Set
+The test set is unknown at the beginning of the competition. It will contain protein sequences (and their functions) from the test superset that gained experimental annotations between the submission deadline and the time of evaluation.
+
+File Descriptions
+Gene Ontology: The ontology data is in the file go-basic.obo. This structure is the 2025-06-01 release of the GO graph. This file is in OBO format, for which there exist many parsing libraries. For example, the obonet package is available for Python. The nodes in this graph are indexed by the term name. The roots of the three ontologies are:
+
+subontology_roots = {
+    'BPO': 'GO:0008150',
+    'CCO': 'GO:0005575',
+    'MFO': 'GO:0003674'
+}
+Training sequences: train_sequences.fasta contains the protein sequences for the training dataset.
+These files are in FASTA format, a standard format for describing protein sequences. The proteins were all retrieved from the UniProt dataset curated at the European Bioinformatics Institute.
+
+The header contains the protein's UniProt accession ID and additional information about the protein. All protein sequences from selected species were extracted from the Swiss-Prot database, from the 2025_03 release on 18 June 2025. The list of selected taxa can be found in selected-taxon-list.tsv.
+
+The train_sequences.fasta file will indicate from which database the sequence originates. For example:
+
+sp|P9WHI7|RECN_MYCT
+indicates the protein with UniProt ID P9WHI7 and gene name RECN_MYCT was taken from Swiss-Prot (sp). All sequences in this competition were taken from Swiss-Prot.
+
+This file contains only sequences for proteins with annotations in the dataset (labeled proteins).
+
+Labels: train_terms.tsv contains the list of annotated terms (ground truth) for the proteins in train_sequences.fasta. The first column indicates the protein's UniProt accession ID, the second is the GO term ID, and the third indicates in which ontology the term appears.
+
+Taxonomy: train_taxonomy.tsv contains the list of proteins and the species to which they belong, represented by a taxonomic identifier (taxon ID). The first column is the protein UniProt accession ID and the second is the taxon ID.
+
+Information accretion: IA.tsv contains the information accretion (weights) for each GO term. These weights are used to compute weighted precision and recall, as described in the Evaluation section.
+
+Test sequences: testsuperset.fasta contains protein sequences on which the participants are asked to submit predictions (GO term predictions and optionally free-text predictions). The header for each sequence contains the protein's UniProt accession ID and the taxon ID of the species this protein belongs to.
+
+Only a small subset of those sequences will accumulate functional annotations and will constitute the test set.
+
+The file selected-taxon-list.tsv provides the set of taxon IDs for the proteins in the test superset.
+
+Files
+train_sequences.fasta – amino acid sequences for proteins in the training set
+train_terms.tsv – the training set of proteins and corresponding annotated GO terms
+train_taxonomy.tsv – taxon IDs for proteins in the training set
+go-basic.obo – ontology graph structure
+testsuperset.fasta – amino acid sequences for proteins on which predictions should be made
+selected-taxon-list.tsv – taxon IDs for proteins in the test superset
+IA.tsv – information accretion for each term (used to weight precision and recall)
+sample_submission.tsv – sample submission file in the correct format

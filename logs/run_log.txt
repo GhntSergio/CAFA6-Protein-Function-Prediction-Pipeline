@@ -1,0 +1,2 @@
+Mode=MinimalFixedBaseline
+Terms=GO:0005515,GO:0016020,GO:0005829
