@@ -2,7 +2,7 @@ CAFA6 Protein Function Prediction Pipeline
 
 Overview
 
-- Implements a modular pipeline for CqqfgAFA6: data loading, preprocessing, model training, evaluation, and submission generation.
+- Implements a modular pipeline for CAFA6: data loading, preprocessing, model training, evaluation, and submission generation.
 - Includes a minimal baseline mode that generates a valid submission in low‑resource environments.
 - Provides scripts and modules under `src/` and `scripts/` for reproducible runs.
 
