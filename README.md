@@ -1,5 +1,7 @@
 CAFA6 Protein Function Prediction Pipeline
 
+![CAFA6 prediction pipeline](docs/overview.png)
+
 Overview
 
 - Implements a modular pipeline for CAFA6: data loading, preprocessing, model training, evaluation, and submission generation.
